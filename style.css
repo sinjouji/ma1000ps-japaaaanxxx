@@ -1,0 +1,680 @@
+/* =========================================================
+   日本地図パズル＆クイズ / style.css
+   ---------------------------------------------------------
+   デザインコンセプト:
+   ・地図を「日本地図.svg」を活版印刷/御朱印帳のような雰囲気で見せる。
+   ・地方ボタンは神社仏閣の御朱印（丸いスタンプ）をモチーフにした
+     "stamp-button"。8地方をそれぞれ伝統色でスタンプ分け。
+   ・配色は藍色を基調に、CTAだけ朱色を差し色として使う。
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=BIZ+UDPGothic:wght@400;700&display=swap');
+
+:root {
+  --color-bg: #EDF2EE;
+  --color-surface: #FFFFFF;
+  --color-ink: #223142;
+  --color-ink-soft: #55636F;
+  --color-primary: #1E3A5F;
+  --color-primary-dark: #142942;
+  --color-cta: #D5573B;
+  --color-cta-dark: #B8432A;
+  --color-success: #4C8A4F;
+  --color-success-bg: #E4F1E1;
+  --color-error: #A8433D;
+  --color-error-bg: #F7E4E1;
+  --color-line: #D9DED6;
+
+  --region-hokkaido: #5C8FC4;
+  --region-tohoku: #4C7A5B;
+  --region-kanto: #9B4444;
+  --region-chubu: #D69B2E;
+  --region-kinki: #6F5A8C;
+  --region-chugoku: #2F5D50;
+  --region-shikoku: #D46A50;
+  --region-kyushu-okinawa: #2E7D8C;
+
+  --font-display: 'Zen Maru Gothic', 'BIZ UDPGothic', sans-serif;
+  --font-body: 'BIZ UDPGothic', 'Zen Maru Gothic', sans-serif;
+
+  --radius-m: 14px;
+  --radius-l: 22px;
+  --shadow-card: 0 2px 10px rgba(30, 58, 95, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 8%, rgba(30, 58, 95, 0.05), transparent 40%),
+    radial-gradient(circle at 90% 85%, rgba(213, 87, 59, 0.06), transparent 45%);
+}
+
+#app { flex: 1; display: flex; flex-direction: column; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, textarea {
+  font-family: inherit;
+  font-size: 16px; /* iOS の自動ズームを防ぐ */
+}
+
+h1, h2, p { margin: 0; }
+
+/* ---------- ヘッダー ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 12px;
+  background: var(--color-primary);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.app-header__title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+.header-back, .header-settings {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.header-back:active, .header-settings:active { background: rgba(255,255,255,0.18); }
+.header-back--placeholder { visibility: hidden; }
+
+main { flex: 1; padding: 20px 16px 40px; max-width: 780px; width: 100%; margin: 0 auto; }
+
+/* ---------- ホーム画面 ---------- */
+.home-main { text-align: center; }
+.home-lead {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--color-ink-soft);
+  margin-bottom: 22px;
+}
+.home-primary {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.big-button {
+  width: 160px;
+  height: 160px;
+  border-radius: var(--radius-l);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.15s ease;
+  border: 3px solid transparent;
+}
+.big-button:active { transform: scale(0.96); }
+.big-button--puzzle { border-color: #FFD9A0; }
+.big-button--quiz { border-color: #C9DDEF; }
+.big-button--all { width: 100%; height: 96px; flex-direction: row; margin-bottom: 26px; border-color: #FFD9A0; }
+.big-button__icon { font-size: 2.6rem; line-height: 1; }
+.big-button--all .big-button__icon { font-size: 2.2rem; }
+.big-button__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--color-primary);
+}
+.home-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 340px;
+  margin: 0 auto;
+}
+.small-button {
+  padding: 13px 16px;
+  border-radius: var(--radius-m);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  font-size: 0.98rem;
+  color: var(--color-primary);
+  text-align: left;
+}
+.small-button:active { background: #F1F0E8; }
+
+/* ---------- 汎用ボタン ---------- */
+.cta-button {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--color-cta);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 0 var(--color-cta-dark);
+}
+.cta-button:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--color-cta-dark); }
+.text-button {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-size: 0.95rem;
+  padding: 8px;
+}
+.section-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  margin: 10px 0 14px;
+  text-align: center;
+}
+.section-lead { color: var(--color-ink-soft); margin-bottom: 18px; line-height: 1.7; }
+.empty-note { color: var(--color-ink-soft); background: var(--color-surface); padding: 16px; border-radius: var(--radius-m); }
+
+/* ---------- 御朱印風スタンプボタン（地方選択） ---------- */
+.puzzle-select-main { text-align: center; }
+.stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+.stamp-button {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 3px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+.stamp-button:nth-child(odd) { transform: rotate(-3deg); }
+.stamp-button:nth-child(even) { transform: rotate(3deg); }
+.stamp-button:active { transform: scale(0.94) rotate(0deg); }
+.stamp-button__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+.stamp-button--hokkaido { color: var(--region-hokkaido); }
+.stamp-button--tohoku { color: var(--region-tohoku); }
+.stamp-button--kanto { color: var(--region-kanto); }
+.stamp-button--chubu { color: var(--region-chubu); }
+.stamp-button--kinki { color: var(--region-kinki); }
+.stamp-button--chugoku { color: var(--region-chugoku); }
+.stamp-button--shikoku { color: var(--region-shikoku); }
+.stamp-button--kyushu-okinawa { color: var(--region-kyushu-okinawa); font-size: 0.85rem; }
+
+/* ---------- パズル ---------- */
+.puzzle-play-main { max-width: 1100px; }
+.puzzle-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.puzzle-progress-block { flex: 1; min-width: 0; }
+.puzzle-progress { font-family: var(--font-display); font-weight: 700; color: var(--color-primary); font-size: 0.95rem; }
+.puzzle-progress-bar {
+  width: 100%;
+  max-width: 260px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  overflow: hidden;
+  margin-top: 4px;
+}
+.puzzle-progress-bar__fill {
+  height: 100%;
+  width: 0%;
+  background: var(--color-success);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.puzzle-stage {
+  position: relative;
+  background: var(--color-surface);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-card);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.puzzle-board-shell {
+  width: 100%;
+  flex: 0 0 auto;
+  height: 46%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+.puzzle-board-viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: none;
+  border-radius: var(--radius-m);
+  background: #F3F6F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.puzzle-board-canvas {
+  width: 100%;
+  flex-shrink: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+.map-board-svg { display: block; width: 100%; height: auto; }
+.pref-slot polygon, .pref-slot path { fill: #E4E9E4; stroke: #A9B6AC; stroke-width: 1.2; transition: fill 0.2s, stroke 0.2s; }
+.pref-slot.slot-filled polygon, .pref-slot.slot-filled path {
+  fill: #8FCE94;
+  stroke: #3F8B49;
+  stroke-width: 1.4;
+  transition: fill 0.35s ease, stroke 0.35s ease;
+}
+
+.puzzle-workspace {
+  position: relative;
+  flex: 1;
+  min-height: 140px;
+  border-top: 1px dashed var(--color-line);
+  margin-top: 10px;
+  padding-top: 10px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.puzzle-workspace__label {
+  margin: 0 0 6px;
+  font-size: 0.82rem;
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+.puzzle-piece-layer { position: absolute; inset: 0; pointer-events: none; }
+.puzzle-piece {
+  position: absolute;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  transition: left 0.22s ease, top 0.22s ease, width 0.22s ease, height 0.22s ease;
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,0.25));
+}
+.puzzle-piece.dragging {
+  transition: none;
+  cursor: grabbing;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+}
+.puzzle-piece.piece-placed { cursor: default; filter: none; }
+.puzzle-piece svg { width: 100%; height: 100%; overflow: visible; }
+.map-piece-svg .pref-piece polygon, .map-piece-svg .pref-piece path { stroke: #fff; stroke-width: 1.4; }
+
+/* ピースの県名ラベル（設定ON時は常時表示、OFF時は長押しでだけ表示） */
+.piece-name-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  padding: 1px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.puzzle-piece.show-name .piece-name-label,
+.puzzle-piece.name-revealed .piece-name-label {
+  opacity: 1;
+}
+
+/* 地図側の県名ラベル（完成した県だけ、設定ONの時に見える） */
+.pref-label {
+  opacity: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  fill: #2A5A2E;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.map-board-svg.show-names .pref-slot.slot-filled .pref-label { opacity: 1; }
+
+
+.pref-piece[data-region="hokkaido"] polygon, .pref-piece[data-region="hokkaido"] path { fill: var(--region-hokkaido); }
+.pref-piece[data-region="tohoku"] polygon, .pref-piece[data-region="tohoku"] path { fill: var(--region-tohoku); }
+.pref-piece[data-region="kanto"] polygon, .pref-piece[data-region="kanto"] path { fill: var(--region-kanto); }
+.pref-piece[data-region="chubu"] polygon, .pref-piece[data-region="chubu"] path { fill: var(--region-chubu); }
+.pref-piece[data-region="kinki"] polygon, .pref-piece[data-region="kinki"] path { fill: var(--region-kinki); }
+.pref-piece[data-region="chugoku"] polygon, .pref-piece[data-region="chugoku"] path { fill: var(--region-chugoku); }
+.pref-piece[data-region="shikoku"] polygon, .pref-piece[data-region="shikoku"] path { fill: var(--region-shikoku); }
+.pref-piece[data-region="kyushu-okinawa"] polygon, .pref-piece[data-region="kyushu-okinawa"] path { fill: var(--region-kyushu-okinawa); }
+
+.puzzle-complete {
+  margin-top: 16px;
+  background: var(--color-success-bg);
+  border-radius: var(--radius-m);
+  padding: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.puzzle-complete__title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 900; color: var(--color-success); margin-bottom: 14px; }
+.puzzle-complete__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* iPad・スマホでは画面の高さいっぱいに盤面＋作業スペースを収め、
+   作業スペースだけが必要に応じてスクロールするようにする */
+body.puzzle-playing #app { height: 100vh; height: 100dvh; overflow: hidden; }
+body.puzzle-playing .puzzle-play-main {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 70px);
+  height: calc(100dvh - 70px);
+  padding-bottom: 12px;
+}
+body.puzzle-playing .puzzle-stage { flex: 1; min-height: 0; }
+
+@media (min-width: 860px) {
+  .puzzle-stage { flex-direction: row; align-items: stretch; }
+  .puzzle-board-shell { flex: 1.3; height: auto; }
+  .puzzle-workspace {
+    flex: 1;
+    border-top: none;
+    border-left: 1px dashed var(--color-line);
+    padding-top: 0;
+    padding-left: 14px;
+    margin-top: 0;
+  }
+}
+
+
+/* ---------- クイズ ---------- */
+.quiz-start-main, .quiz-result-main { text-align: center; }
+.quiz-count { font-family: var(--font-display); font-weight: 700; color: var(--color-primary); margin-bottom: 18px; }
+.quiz-play-main { max-width: 1100px; display: flex; flex-direction: column; }
+.quiz-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
+.quiz-toolbar__right { display: flex; gap: 4px; }
+.quiz-progress { font-family: var(--font-display); font-weight: 700; color: var(--color-primary); }
+.quiz-question {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 3.2vw, 1.2rem);
+  font-weight: 700;
+  background: var(--color-surface);
+  border-radius: var(--radius-m);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 10px;
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+.quiz-question ruby rt { font-size: 0.6em; color: var(--color-ink-soft); }
+.quiz-hints { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; flex-shrink: 0; }
+.hint-button {
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: #FFF3E0;
+  color: #A3661E;
+  font-size: 0.88rem;
+}
+.hint-button:disabled { opacity: 0.35; }
+.hint-text {
+  background: #FFF3E0;
+  color: #7A4E14;
+  padding: 10px 14px;
+  border-radius: var(--radius-m);
+  font-size: 0.92rem;
+}
+
+.quiz-map-shell {
+  position: relative;
+  flex: 1;
+  min-height: 260px;
+  background: var(--color-surface);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-card);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.map-zoom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 0 8px;
+  flex-shrink: 0;
+}
+.zoom-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.zoom-btn:active { background: var(--color-primary-dark); }
+.zoom-level {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-primary);
+  min-width: 3.4em;
+  text-align: center;
+}
+.zoom-reset-btn {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.quiz-map-viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: none;
+  border-radius: var(--radius-m);
+  background: #F3F6F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quiz-map-canvas {
+  width: 100%;
+  flex-shrink: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+.map-quiz-svg { display: block; width: 100%; height: auto; touch-action: none; }
+.pref-tap polygon, .pref-tap path { fill: #E4E9E4; stroke: #A9B6AC; stroke-width: 1; cursor: pointer; transition: fill 0.15s; }
+.pref-tap:active polygon, .pref-tap:active path { fill: #CBD6CC; }
+.pref-tap.pref-correct polygon, .pref-tap.pref-correct path { fill: var(--color-success); stroke: #386438; }
+.pref-tap.pref-incorrect polygon, .pref-tap.pref-incorrect path { fill: var(--color-error); stroke: #7A2E29; }
+
+body.no-scroll { overflow: hidden; }
+
+
+.quiz-feedback { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 10px 0; min-height: 1.5em; flex-shrink: 0; }
+.quiz-feedback--correct { color: var(--color-success); }
+.quiz-feedback--incorrect { color: var(--color-error); }
+.quiz-explanation { background: var(--color-surface); border-radius: var(--radius-m); padding: 14px; margin-bottom: 10px; color: var(--color-ink-soft); line-height: 1.7; flex-shrink: 0; }
+.quiz-play-main .cta-button { display: block; width: 100%; text-align: center; flex-shrink: 0; }
+.quiz-result__score { font-family: var(--font-display); font-size: 1.6rem; font-weight: 900; color: var(--color-primary); margin: 30px 0; }
+.quiz-result__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* iPad・スマホでは画面の高さいっぱいに使い、地図部分だけをスクロールできるようにする */
+body.quiz-playing #app { height: 100vh; height: 100dvh; overflow: hidden; }
+body.quiz-playing .quiz-play-main {
+  height: calc(100vh - 70px);
+  height: calc(100dvh - 70px);
+  padding-bottom: 12px;
+}
+
+
+/* ---------- 問題管理 ---------- */
+.qlist-search { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.qlist-search .text-input { flex: 1; min-width: 140px; }
+.qlist-count { color: var(--color-ink-soft); font-size: 0.88rem; margin: 12px 0 6px; }
+.qlist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.qlist-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-surface);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-card);
+  padding: 10px 12px;
+}
+.qlist-item__body { flex: 1; cursor: pointer; }
+.qlist-item__question { font-weight: 700; margin-bottom: 4px; }
+.qlist-item__meta { font-size: 0.82rem; color: var(--color-ink-soft); }
+.qlist-item__actions { display: flex; gap: 4px; }
+.icon-button { font-size: 1.2rem; padding: 6px; border-radius: 8px; }
+.icon-button:active { background: var(--color-bg); }
+.qlist-empty { text-align: center; color: var(--color-ink-soft); padding: 30px 0; }
+
+.text-input, .text-area {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: var(--radius-m);
+  border: 1.5px solid var(--color-line);
+  background: var(--color-surface);
+  margin-bottom: 14px;
+  resize: vertical;
+}
+.field-label { display: block; font-weight: 700; margin-bottom: 6px; color: var(--color-primary); font-size: 0.94rem; }
+
+.answer-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; min-height: 30px; }
+.answer-chips__empty { color: var(--color-ink-soft); font-size: 0.88rem; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #DCE7F0;
+  color: var(--color-primary);
+  border-radius: 999px;
+  padding: 5px 6px 5px 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+.chip__remove { color: var(--color-primary); font-size: 1rem; padding: 2px 6px; }
+
+.pref-picker { max-height: 260px; overflow-y: auto; border: 1.5px solid var(--color-line); border-radius: var(--radius-m); padding: 10px; margin-bottom: 16px; background: var(--color-surface); }
+.pref-picker__region { font-weight: 700; color: var(--color-ink-soft); font-size: 0.85rem; margin: 8px 0 4px; }
+.pref-picker__list { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.pref-check { display: flex; align-items: center; gap: 5px; font-size: 0.9rem; padding: 3px 0; }
+
+.duplicate-panel { background: #FFF3E0; border-radius: var(--radius-m); padding: 14px; margin-bottom: 14px; }
+.duplicate-panel__title { font-weight: 700; color: #A3661E; margin-bottom: 8px; }
+.duplicate-panel__list { margin: 0; padding-left: 20px; font-size: 0.9rem; color: #7A4E14; }
+.qedit-actions { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+
+/* ---------- データ書き出し/取り込み ---------- */
+.dataio-main { text-align: center; }
+.dataio-note { margin-top: 14px; color: var(--color-ink-soft); }
+.dataio-preview {
+  margin-top: 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+.dataio-preview__summary { margin-bottom: 10px; color: var(--color-ink); }
+.file-input { display: block; margin: 0 auto; }
+
+/* ---------- 設定 ---------- */
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-surface);
+  border-radius: var(--radius-m);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 10px;
+}
+.settings-row__label { font-weight: 700; }
+.toggle input { display: none; }
+.toggle__track { display: block; width: 46px; height: 26px; background: #CBD3CE; border-radius: 999px; position: relative; transition: background 0.2s; }
+.toggle__thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: left 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
+.toggle input:checked + .toggle__track { background: var(--color-primary); }
+.toggle input:checked + .toggle__track .toggle__thumb { left: 23px; }
+.volume-select { display: flex; gap: 6px; }
+.volume-select__btn { padding: 8px 14px; border-radius: 999px; background: var(--color-bg); font-weight: 700; }
+.volume-select__btn.is-active { background: var(--color-primary); color: #fff; }
+
+.about-section {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-line);
+  text-align: center;
+}
+.about-section__title { font-weight: 700; color: var(--color-ink-soft); font-size: 0.85rem; margin-bottom: 6px; }
+.about-section__attribution { font-size: 0.78rem; color: var(--color-ink-soft); line-height: 1.6; }
+.about-section__note { font-size: 0.72rem; color: var(--color-ink-soft); opacity: 0.8; margin-top: 2px; }
+
+/* ---------- レスポンシブ調整 ---------- */
+@media (max-width: 420px) {
+  .big-button { width: 140px; height: 140px; }
+  .app-header__title { font-size: 0.95rem; }
+}
+
+/* アクセシビリティ: フォーカスリング */
+button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid #8fb4d8;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
